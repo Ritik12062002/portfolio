@@ -59,8 +59,9 @@ export const Home = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
             >
               <a
-                href="/resume.pdf"
-                download="Ritik_DevOps_Engineer_Resume.pdf"
+                href="/resume"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex items-center px-8 py-4 border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-bg-surface transition-all duration-200 font-semibold tracking-wide rounded-lg shadow-glow hover:shadow-card-hover"
               >
                 <Code2 className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
