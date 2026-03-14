@@ -78,10 +78,16 @@ Sent from your Portfolio Website
         msg.attach(MIMEText(body, 'plain'))
 
         # Connect to Gmail SMTP
+        logger.info(f"Connecting to SMTP server at smtp.gmail.com:587")
         server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.set_debuglevel(1)  # Enable debug output for SMTP
         server.starttls()
         server.login(sender_email, sender_password)
-        server.sendmail(sender_email, receiver_email, msg.as_string())
+        refused = server.sendmail(sender_email, receiver_email, msg.as_string())
+        if refused:
+            logger.error(f"Email delivery refused by SMTP server for: {refused}")
+        else:
+            logger.info(f"SMTP server accepted the message for {receiver_email}")
         server.quit()
         logger.info(f"Background email successfully sent to {receiver_email}")
     except Exception as e:
@@ -93,7 +99,9 @@ async def send_contact_email(form: ContactForm, background_tasks: BackgroundTask
     
     sender_email = os.getenv("SENDER_EMAIL")
     sender_password = os.getenv("SENDER_PASSWORD")
-    receiver_email = "ritikkumar0987@gmail.com"
+    receiver_email = os.getenv("RECEIVER_EMAIL", "ritikkumar0987@gmail.com")
+
+    logger.info(f"Attempting to send email via {sender_email} to {receiver_email}")
 
     if not sender_email or not sender_password:
             logger.error("Email credentials missing in .env file")
